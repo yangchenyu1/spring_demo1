@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+<!-- 配置目标类 service-->
+    <!--<bean id="userService" class="com.yueqian.spring.dao.UserServiceImpl"></bean>-->
+    <!--配置切面类-->
+    <!--<bean id="userAspect" class="com.yueqian.spring.dao.UserServiceAspect"></bean>-->
+    <!--配置aop-->
+   <!-- <aop:config>
+        &lt;!&ndash;配置切面类 关联起来&ndash;&gt;
+       <aop:aspect ref="userAspect">
+            &lt;!&ndash;对于公共的切点方法 可以提取&ndash;&gt;
+            <aop:pointcut id="userCut" expression="execution(* *..*.save*(..))"/>
+          <aop:before method="before" pointcut-ref="userCut" arg-names="joinPoint"></aop:before>
+            <aop:after-returning method="after" pointcut-ref="userCut" returning="obj" ></aop:after-returning>
+        <aop:around method="round" pointcut-ref="userCut"  arg-names="joinPoint"></aop:around>
+        </aop:aspect>
+    </aop:config>-->
+    <!--aop的自动代理-->
+    <context:component-scan base-package="com.yueqian.spring"></context:component-scan>
+    <!--aop的自动代理-->
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+    <!--关联db.properties文件-->
+    <context:property-placeholder location="classpath:db.properties"></context:property-placeholder>
+    <!--创建dataSource-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver}"></property>
+        <property name="jdbcUrl" value="${jdbc.url}"></property>
+        <property name="user" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <!--jdbc模板对象-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <!--依赖注入dataSource-->
+    <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+
+</beans>
+
